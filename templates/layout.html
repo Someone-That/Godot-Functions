@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>{{title}}</title>
+		<link rel="stylesheet" href="/static/css/style.css">
+  		<link rel="icon" type="image/x-icon" href="">
+	</head>
+	<body>
+		<header>
+			{% include "header.html" %}
+		</header>
+		<nav>
+			{% include "nav.html" %}
+		</nav>
+		{% block content %}{% endblock %}
+		<footer>
+			{% include "footer.html" %}
+		</footer>
+	</body>
+</html>

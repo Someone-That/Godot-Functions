@@ -1,0 +1,13 @@
+body
+{
+    font-family: "Comic Sans MS";
+    background-color: black;
+    color: white;
+}
+
+h1
+{
+    padding:50px;
+    width: 100%;
+    background-color: yellow;
+}
