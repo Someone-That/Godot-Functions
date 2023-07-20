@@ -5,26 +5,19 @@ import sqlite3
 app = Flask(__name__)
 
 
-conn = sqlite3.connect('functions.db')
-cur = conn.cursor()
-
 
 def sql_statement(sql, table):
-	table = "table"
-	sql = f"SELECT * FROM {table}"
-	cur.execute(sql) #selects all the items from the chosen table
+	conn = sqlite3.connect('functions.db')
+	cur = conn.cursor()
+	#if sql == "show": cur.execute("SELECT * FROM ?",(table,)) #selects all the items from the chosen table
+	if sql == "show": cur.execute(f"SELECT * FROM {table};")
 	return cur.fetchall() #returns the results
 
 
 @app.route('/')
 def home():
-	conn = sqlite3.connect('functions.db')
-	cur = conn.cursor()
-	table = "table"
-	sql = f"SELECT * FROM {table}"
-	cur.execute(sql) #selects all the items from the chosen table
-	results = cur.fetchall() #stores the results in the results variable
-	return render_template("home.html", title = "Home", results=results)
+	functions = sql_statement("show", "Functions")
+	return render_template("home.html", title = "Home", functions=functions)
 
 
 @app.route('/add-your-own')
