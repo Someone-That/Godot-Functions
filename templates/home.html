@@ -1,2 +1,9 @@
 {% extends "layout.html" %}
-{% block content %}<h2>{{functions}}</h2>{% endblock %}
+{% block content %}
+
+{% for i in range(function_quantity) %}
+    <h2 style="text-align: center; font-size: 50px;">{{i}}</h2>
+    <h2 style="text-align: center;">{{i}}</h2>
+{%endfor%}
+
+{% endblock %}
