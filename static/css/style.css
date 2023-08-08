@@ -23,7 +23,7 @@ h2.function-name:hover + div.description {
 
 .function-name
 {
-    font-size: 50px;
+    font-size: 40px;
 }
 
 h2.function-name:hover {
@@ -35,7 +35,7 @@ div.description
     display: none;
 }
 
-div.description:hover
+#title
 {
-    display: block;
+    font-size: 50px;
 }
