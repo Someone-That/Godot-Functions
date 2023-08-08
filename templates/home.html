@@ -4,9 +4,11 @@
 <h2 style="text-align: center; font-size: 50px;">My top {{function_quantity}} favourite functions</h1>
 
 {% for i in range(function_quantity) %}
-    <h2 style="text-align: center; font-size: 50px;">{{i+1}}. {{function_names[i]}}, {{return_types[i]}}</h2>
-    <h2 style="text-align: center;">{{descriptions[i]}}</h2>
-    <h2 style="text-align: center;"><a href="https://docs.godotengine.org/en/stable/classes/class_{{doc_links[i]}}" target="_blank">Doc link</a></h2>
+    <h2 class="function-name">{{i+1}}. {{function_names[i]}}, {{return_types[i]}}</h2>
+    <div class = "description">
+    <h2>{{descriptions[i]}}</h2>
+    <h2><a href="https://docs.godotengine.org/en/stable/classes/class_{{doc_links[i]}}" target="_blank">Doc link</a></h2>
+    </div>
 {%endfor%}
 
 {% endblock %}

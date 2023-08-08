@@ -5,9 +5,37 @@ body
     color: white;
 }
 
-h1
+h1  
 {
     padding:50px;
     width: 100%;
     background-color: yellow;
+}
+
+h2
+{
+    text-align: center;
+}
+
+h2.function-name:hover + div.description {
+    display: block;
+}
+
+.function-name
+{
+    font-size: 50px;
+}
+
+h2.function-name:hover {
+    color: red;
+}
+
+div.description 
+{
+    display: none;
+}
+
+div.description:hover
+{
+    display: block;
 }
