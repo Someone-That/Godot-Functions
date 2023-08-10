@@ -34,19 +34,22 @@ def home():
 	#gets parameter data by extracting functions that have parameters, parameters of those functions, data type of those parameters and then generates a neat list for easy implementation into html note: the sql statements below were created using the stackoverflow statement above
 	functions_that_have_parameters = sql_statement("SELECT function FROM FunctionParameters r INNER JOIN Functions c ON r.fid = c.id")
 	function_parameters = sql_statement("SELECT name FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id")
-	parameters = sql_statement("SELECT name FROM Parameters")
-	parameter_data_types = sql_statement("SELECT name FROM Parameters r INNER JOIN DataType c ON r.data_type = c.id")
+	parameter_data_types = sql_statement("SELECT name FROM (SELECT data_type FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id) r INNER JOIN DataType c ON r.data_type = c.id")
 
 	neat_parameter_list = []
 	for i in range(function_quantity):
-		neat_parameter_list.append("()")
+		neat_parameter_list.append("(")
 	
 	for i in functions_that_have_parameters:
 		if i in function_names:
-			neat_parameter_list[function_names.index(i)]
+			index = function_names.index(i)
+			neat_parameter_list[index] += f"{parameter_data_types[index]} {function_parameters[index]} "
+	
+	for i in range(function_quantity):
+		neat_parameter_list[i] += ")"
 
 	#pass in all the data
-	return render_template("home.html", title = "Home", function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity[0])
+	return render_template("home.html", title = "Home", function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity[0], neat_parameter_list=neat_parameter_list)
 
 
 @app.route('/add-your-own')
