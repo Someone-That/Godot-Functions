@@ -4,7 +4,7 @@
 <h2 id="title">My top {{function_quantity}} favourite functions</h1>
 
 {% for i in range(function_quantity) %} <!--loops through all the data neatly-->
-    <h2 class="function-name">{{i+1}}. {{function_names[i]}}{{neat_parameter_list[i]}}, {{return_types[i]}}</h2> <!--displays ranking, name, parameters, and return type-->
+    <h2 class="function-name">{{i+1}}. {{function_names[i]}}{{neat_parameter_list[i] | safe}}, {{return_types[i]}}</h2> <!--displays ranking, name, parameters, and return type-->
     <div class = "description">
     <h2>{{descriptions[i]}}</h2>
     <h2><a href="https://docs.godotengine.org/en/stable/classes/class_{{doc_links[i]}}" target="_blank">Doc link</a></h2> <!--takes advantage of the repeated link path of the godot docs-->
