@@ -17,22 +17,9 @@ h2
     text-align: center;
 }
 
-h2.function-name:hover + div.description {
-    display: block;
-}
-
 .function-name
 {
     font-size: 40px;
-}
-
-h2.function-name:hover {
-    color: red;
-}
-
-div.description 
-{
-    display: none;
 }
 
 #title
@@ -40,7 +27,7 @@ div.description
     font-size: 50px;
 }
 
-div.parameter-data-type
+.parameter-data-type
 {
     font-size: 30px;
 }

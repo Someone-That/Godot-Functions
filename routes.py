@@ -42,7 +42,7 @@ def home():
 	
 	for i in range(len(function_parameters)): #goes through the function parameters, gets the index of the function the parameter belongs to by using the functions_that_have_parameters list and then uses that index to add to the parameter list for that function
 		index = function_names.index(functions_that_have_parameters[i])
-		neat_parameter_list[index] += f"{parameter_data_types[i]} {function_parameters[i]}, "
+		neat_parameter_list[index] += f"<i class='parameter-data-type'>{parameter_data_types[i]}</i> {function_parameters[i]}, "
 	
 	#for i in functions_that_have_parameters: #removes the space at the end of every parameter list by deleting the last character of every parameter list that has content
 	#	parameter_in_question = neat_parameter_list[function_names.index[i]]
