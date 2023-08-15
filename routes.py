@@ -69,9 +69,9 @@ def add_your_own():
 
 @app.route('/add-your-own', methods=['POST'])
 def form():
+	response = request.form
 	fname = request.form['fname']
-	lname = request.form['lname']
-	return render_template("add_your_own.html", title="Add your own", fname=fname, lname=lname)
+	return render_template("add_your_own.html", title="Add your own", fname=fname)
 
 
 if __name__ == "__main__":

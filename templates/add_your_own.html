@@ -4,10 +4,23 @@
 <h2>basic template</h2>
 
 <form action="add-your-own", method="post">
-  <label for="fname">First name:</label>
+  <label>Function name:</label>
   <input type="text" id="fname" name="fname"><br><br>
-  <label for="lname">Last name:</label>
-  <input type="text" id="lname" name="lname"><br><br>
+
+  <label>Description:</label>
+  <input type="text" id="description" name="description"><br><br>
+
+  <label>Return type:</label>
+  <select name="return type" id="return type">
+    {% for i in data_types %}
+        <option value="{{i}}">{{i}}</option>
+  </select><br><br>
+
+  <h2>Parameters, input up to a max of 10.</h2>
+
+  {% for i in range(10) %}
+  
+
   <input type="submit" value="Submit">
 </form>
 
