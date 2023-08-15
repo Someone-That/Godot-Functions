@@ -1,2 +1,17 @@
 {% extends "layout.html" %}
-{% block content %}<h2>add your own</h2>{% endblock %}
+{% block content %}
+
+<h2>basic template</h2>
+
+<form action="add-your-own", method="post">
+  <label for="fname">First name:</label>
+  <input type="text" id="fname" name="fname"><br><br>
+  <label for="lname">Last name:</label>
+  <input type="text" id="lname" name="lname"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<h2>{{fname}}</h2>
+<h2>{{lname}}</h2>
+
+{% endblock %}

@@ -3,11 +3,13 @@ body
     font-family: "Comic Sans MS";
     background-color: black;
     color: white;
+    text-align: center;
 }
 
 h1  
 {
     padding:50px;
+    text-align: start;
     width: 100%;
     background-color: yellow;
 }
