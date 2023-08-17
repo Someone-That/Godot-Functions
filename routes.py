@@ -64,7 +64,8 @@ def home():
 
 @app.route('/add-your-own')
 def add_your_own():
-	return render_template("add_your_own.html", title="Add your own")
+	data_types = sql_statement("SELECT name from DataType")
+	return render_template("add_your_own.html", title="Add your own", data_types=data_types)
 
 
 @app.route('/add-your-own', methods=['POST'])
