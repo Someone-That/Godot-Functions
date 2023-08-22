@@ -4,13 +4,13 @@
 <h2>This is where you can add your own function to my list of favourite functions.</h2>
 
 <form action="add-your-own", method="post">
-  <label>Function name:</label>
-  <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12"><br><br>
+  <label for="fname">Function name:</label>
+  <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label><br><br>
 
-  <label>Description:</label><br>
+  <label for="description">Description:</label> <label class="notification-text">{{notification_text["cptoadd"]}}</label><br>
   <textarea id="description" name="description" rows="4" cols="50" placeholder="2-200 characters"></textarea><br><br>
 
-  <label>Return type:</label>
+  <label for="return-type">Return type:</label>
   <select name="return type" id="return-type">
     <option value=""></option>
     {% for i in data_types %}
@@ -18,13 +18,13 @@
     {%endfor%}
   </select>
   
-  <label>, Custom return type:</label>
-  <input type="text" class="return-type" name="custom return type" placeholder="2-15 characters" size="12">
+  <label for="custom-return-type">, Custom return type:</label>
+  <input type="text" id="custom-return-type" name="custom return type" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
   <br><br>
 
 <!--this is where the user selects how many parameters they want-->
   {% if parameter_quantity < max_parameters %}
-  <label>Parameters to add:</label>
+  <label for="parameter-quantity">Parameters to add:</label>
   <select name="ptoadd" id="parameter-quantity">
     <option value="{{parameter_quantity}}"></option>
     {% for i in range(max_parameters-parameter_quantity) %}
@@ -37,7 +37,7 @@
   {% endif %}
 
   {% if custom_parameter_quantity < max_parameters %}
-  <label>Custom parameters to add:</label>
+  <label for="custom-parameter-quantity">Custom parameters to add:</label>
   <select name="cptoadd" id="custom-parameter-quantity">
     <option value="{{custom_parameter_quantity}}"></option>
     {% for i in range(max_parameters-custom_parameter_quantity) %}
@@ -50,7 +50,7 @@
   {% endif %}
 
   {% if custom_parameter_quantity < max_parameters or parameter_quantity < max_parameters %}
-  <input type="submit" value="Submit">
+  <input type="submit" value="Submit"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
   <br><br>
   {% endif %}
 
@@ -76,15 +76,15 @@
 
   {% for i in range(custom_parameter_quantity) %} <!--custom parameter inputs-->
   <label>Add your own parameter:</label>
-  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12">
+  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
 
   <label>, Custom data type:</label>
-  <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12">
+  <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
   <br><br>
   {%endfor%}
 
-  <label>Documentation Link:</label>
-  <input type="text" id="doclink" name="doclink" size="100"><br><br>
+  <label for="doclink">Documentation Link:</label>
+  <input type="text" id="doclink" name="doclink" size="100" placeholder="2-100 characters"> <label class="notification-text">{{notification_text["cptoadd"]}}</label><br><br>
 
   <input type="submit" value="Submit">
 </form>

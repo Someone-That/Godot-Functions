@@ -69,7 +69,8 @@ def add_your_own():
 	custom_parameter_quantity = 0
 	parameter_quantity = 0
 	max_parameters = 5
-	return render_template("add_your_own.html", title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, max_parameters=max_parameters)
+	notification_text = {"cptoadd" : "NOTIFICATION"}
+	return render_template("add_your_own.html", notification_text=notification_text, title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, max_parameters=max_parameters)
 
 
 @app.route('/add-your-own', methods=['POST'])
@@ -79,7 +80,8 @@ def form():
 	custom_parameter_quantity = int(response["cptoadd"])
 	parameter_quantity = int(response["ptoadd"])
 	max_parameters = 5
-	return render_template("add_your_own.html", max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own", fname=fname)
+	notification_text = {"cptoadd" : "NOTIFICATION"}
+	return render_template("add_your_own.html", notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own", fname=fname)
 
 
 if __name__ == "__main__":
