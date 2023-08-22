@@ -16,7 +16,12 @@
     {% for i in data_types %}
         <option value="{{i}}">{{i}}</option>
     {%endfor%}
-  </select><br><br>
+  </select>
+  
+  <label>, Custom return type:</label>
+  <input type="text" class="return-type" name="custom return type" placeholder="2-15 characters" size="12">
+  <br><br>
+
 <!--this is where the user selects how many parameters they want-->
   {% if parameter_quantity < max_parameters %}
   <label>Parameters to add:</label>
@@ -26,6 +31,9 @@
         <option value="{{i+1+parameter_quantity}}">{{i+1}}</option>
     {%endfor%}
   </select>
+
+  {% else %}
+  <input type="text" name="ptoadd" value="{{parameter_quantity}}" class="hidden"> <!--i do not know of any other way to hide things but still have the data exist as without this, the parameter dissapears because it's simply not rendered and jinja has a tantrum-->
   {% endif %}
 
   {% if custom_parameter_quantity < max_parameters %}
@@ -36,11 +44,16 @@
         <option value="{{i+1+custom_parameter_quantity}}">{{i+1}}</option>
     {%endfor%}
   </select>
+
+  {% else %}
+  <input type="text" name="cptoadd" value="{{custom_parameter_quantity}}" class="hidden"> <!--i do not know of any other way to hide things but still have the data exist as without this, the parameter dissapears because it's simply not rendered and jinja has a tantrum-->
   {% endif %}
 
+  {% if custom_parameter_quantity < max_parameters or parameter_quantity < max_parameters %}
   <input type="submit" value="Submit">
-
   <br><br>
+  {% endif %}
+
 
   {% for i in range(parameter_quantity) %} <!--parameter inputs-->
   <label>Parameter:</label>
