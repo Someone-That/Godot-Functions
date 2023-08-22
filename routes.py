@@ -58,7 +58,7 @@ def home():
 	for i in range(function_quantity):  #adds the closing parenthesis
 		neat_parameter_list[i] += ")"
 
-	#pass in all the data
+	#passes in all the data
 	return render_template("home.html", title="Home", function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
 
 
@@ -66,14 +66,20 @@ def home():
 def add_your_own():
 	data_types = sql_statement("SELECT name from DataType")
 	parameters = sql_statement("SELECT name from Parameters")
-	return render_template("add_your_own.html", title="Add your own", data_types=data_types, parameters=parameters)
+	custom_parameter_quantity = 0
+	parameter_quantity = 0
+	max_parameters = 5
+	return render_template("add_your_own.html", title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, max_parameters=max_parameters)
 
 
 @app.route('/add-your-own', methods=['POST'])
 def form():
 	response = request.form
 	fname = request.form['fname']
-	return render_template("add_your_own.html", title="Add your own", fname=fname)
+	custom_parameter_quantity = int(response["cptoadd"])
+	parameter_quantity = int(response["ptoadd"])
+	max_parameters = 5
+	return render_template("add_your_own.html", max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own", fname=fname)
 
 
 if __name__ == "__main__":

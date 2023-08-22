@@ -11,16 +11,38 @@
   <textarea id="description" name="description" rows="4" cols="50" placeholder="2-200 characters"></textarea><br><br>
 
   <label>Return type:</label>
-  <select name="return type" class="return-type">
+  <select name="return type" id="return-type">
     <option value=""></option>
     {% for i in data_types %}
         <option value="{{i}}">{{i}}</option>
     {%endfor%}
   </select><br><br>
+<!--this is where the user selects how many parameters they want-->
+  {% if parameter_quantity < max_parameters %}
+  <label>Parameters to add:</label>
+  <select name="ptoadd" id="parameter-quantity">
+    <option value="{{parameter_quantity}}"></option>
+    {% for i in range(max_parameters-parameter_quantity) %}
+        <option value="{{i+1+parameter_quantity}}">{{i+1}}</option>
+    {%endfor%}
+  </select>
+  {% endif %}
 
-  <h2>Parameters, input up to a max of 10.</h2>
+  {% if custom_parameter_quantity < max_parameters %}
+  <label>Custom parameters to add:</label>
+  <select name="cptoadd" id="custom-parameter-quantity">
+    <option value="{{custom_parameter_quantity}}"></option>
+    {% for i in range(max_parameters-custom_parameter_quantity) %}
+        <option value="{{i+1+custom_parameter_quantity}}">{{i+1}}</option>
+    {%endfor%}
+  </select>
+  {% endif %}
 
-  {% for i in range(10) %} <!--parameter inputs-->
+  <input type="submit" value="Submit">
+
+  <br><br>
+
+  {% for i in range(parameter_quantity) %} <!--parameter inputs-->
   <label>Parameter:</label>
   <select name="parameter{{i}}" class="parameter">
     <option value=""></option>
@@ -28,9 +50,6 @@
         <option value="{{i}}">{{i}}</option>
     {%endfor%}
   </select>
-
-  <label>, Add your own parameter:</label>
-  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12">
   
   <label>, Parameter's data type:</label>
   <select name="parameterdt{{i}}" class="return-type">
@@ -39,8 +58,14 @@
         <option value="{{i}}">{{i}}</option>
     {%endfor%}
   </select>
+  <br><br>
+  {%endfor%}
 
-  <label>, Custom data type (optional):</label>
+  {% for i in range(custom_parameter_quantity) %} <!--custom parameter inputs-->
+  <label>Add your own parameter:</label>
+  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12">
+
+  <label>, Custom data type:</label>
   <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12">
   <br><br>
   {%endfor%}
