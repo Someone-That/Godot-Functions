@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sqlite3
 
 
 app = Flask(__name__)
+
+scroll_bottom = False
 
 
 def sql_statement(sql):
@@ -59,7 +61,7 @@ def home():
 		neat_parameter_list[i] += ")"
 
 	#passes in all the data
-	return render_template("home.html", title="Home", function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
+	return render_template("home.html", title="Home", scroll_bottom=scroll_bottom, function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
 
 
 @app.route('/add-your-own')
@@ -76,12 +78,37 @@ def add_your_own():
 @app.route('/add-your-own', methods=['POST'])
 def form():
 	response = request.form
-	fname = request.form['fname']
 	custom_parameter_quantity = int(response["cptoadd"])
 	parameter_quantity = int(response["ptoadd"])
-	max_parameters = 5
-	notification_text = {"cptoadd" : "NOTIFICATION"}
-	return render_template("add_your_own.html", notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own", fname=fname)
+
+	if response["cptoadd"] or response["ptoadd"]: #user just wants to add parameters
+		max_parameters = 5
+		notification_text = {"cptoadd" : "NOTIFICATION"}
+		return render_template("add_your_own.html", notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own", fname=fname)
+	
+	#user wants to submit
+	fname = response['fname']
+	description = response["description"]
+	doclink = response["doclink"]
+
+	if response["return type"]: #get id of the return type
+		pass
+	if response["custom return type"]:
+		pass
+
+	for i in range(parameter_quantity): 
+		#loops through paramaters, gets the id of parameter data type and adds them appropriately to database
+		pass
+
+	for i in range(custom_parameter_quantity): 
+		#same thing as above but adds parameter and data type to database first and then getting id
+		pass
+	
+	#insert new entry
+	sql_statement(f"INSERT INTO Functions (function, description, return_type, doc_link) VALUES ({fname}, {description}, {response}, {doclink})")
+
+	scroll_bottom = True #only method i could think of for teleporting user to their function
+	return redirect("/") #redirects user to homepage to see their function
 
 
 if __name__ == "__main__":

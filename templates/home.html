@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h2 id="title">My top {{function_quantity}} favourite functions</h1>
+<h2 id="title">My top {{function_quantity}} favourite functions</h2>
+{% if scroll_bottom %}<h2><a href="#bottom">See your function</a></h2>{% endif %}
 
 {% for i in range(function_quantity) %} <!--loops through all the data neatly-->
     <h2 class="function-name">{{i+1}}. {{function_names[i]}}{{neat_parameter_list[i] | safe}}, {{return_types[i]}}</h2> <!--displays ranking, name, parameters, and return type-->
@@ -10,5 +11,7 @@
     <h2><a href="https://docs.godotengine.org/en/stable/classes/class_{{doc_links[i]}}" target="_blank">Documentation</a></h2> <!--takes advantage of the repeated link path of the godot docs-->
     </div>
 {%endfor%}
+
+<div id="bottom"></div>
 
 {% endblock %}
