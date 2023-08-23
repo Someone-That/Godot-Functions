@@ -5,9 +5,13 @@
 
 <form action="add-your-own", method="post">
   <label for="fname">Function name:</label>
-  <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label><br><br>
+  <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12"> 
+  {% if notification_text["name"] %}<label class="notification-text">{{notification_text["name"]}}</label>{% endif %}
+  <br><br>
 
-  <label for="description">Description:</label> <label class="notification-text">{{notification_text["cptoadd"]}}</label><br>
+  <label for="description">Description:</label> 
+  {% if notification_text["description"] %}<label class="notification-text">{{notification_text["description"]}}</label>{% endif %}
+  <br>
   <textarea id="description" name="description" rows="4" cols="50" placeholder="2-200 characters"></textarea><br><br>
 
   <label for="return-type">Return type:</label>
@@ -19,7 +23,8 @@
   </select>
   
   <label for="custom-return-type">, Custom return type:</label>
-  <input type="text" id="custom-return-type" name="custom return type" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
+  <input type="text" id="custom-return-type" name="custom return type" placeholder="2-15 characters" size="12"> 
+  {% if notification_text["return type"] %}<label class="notification-text">{{notification_text["return type"]}}</label>{% endif %}
   <br><br>
 
 <!--this is where the user selects how many parameters they want-->
@@ -50,7 +55,8 @@
   {% endif %}
 
   {% if custom_parameter_quantity < max_parameters or parameter_quantity < max_parameters %}
-  <input type="submit" value="Submit"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
+  <input type="submit" value="Submit"> 
+  {% if notification_text["cptoadd"] %}<label class="notification-text">{{notification_text["cptoadd"]}}</label>{% endif %}
   <br><br>
   {% endif %}
 
@@ -76,15 +82,19 @@
 
   {% for i in range(custom_parameter_quantity) %} <!--custom parameter inputs-->
   <label>Add your own parameter:</label>
-  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
+  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12"> 
+  <label class="notification-text">{{notification_text["cptoadd"]}}</label>
 
   <label>, Custom data type:</label>
-  <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12"> <label class="notification-text">{{notification_text["cptoadd"]}}</label>
+  <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12"> 
+  {% if notification_text["cptoadd"] %}<label class="notification-text">{{notification_text["cptoadd"]}}</label>{% endif %}
   <br><br>
   {%endfor%}
 
   <label for="doclink">Documentation Link:</label>
-  <input type="text" id="doclink" name="doclink" size="100" placeholder="2-100 characters"> <label class="notification-text">{{notification_text["cptoadd"]}}</label><br><br>
+  <input type="text" id="doclink" name="doclink" size="100" placeholder="2-100 characters"> 
+  {% if notification_text["documentation link"] %}<label class="notification-text">{{notification_text["documentation link"]}}</label>{% endif %}
+  <br><br>
 
   <input type="submit" value="Submit">
 </form>
