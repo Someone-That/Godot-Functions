@@ -69,23 +69,23 @@
         <option value="{{i}}">{{i}}</option>
     {%endfor%}
   </select>
-  
-  <label>, Parameter's data type:</label>
-  <select name="parameterdt{{i}}" class="return-type">
-    <option value=""></option>
-    {% for i in data_types %}
-        <option value="{{i}}">{{i}}</option>
-    {%endfor%}
-  </select>
+  {% if notification_text["ptoadd"] %}<label class="notification-text">{{notification_text["ptoadd"]}}</label>{% endif %}
   <br><br>
   {%endfor%}
 
   {% for i in range(custom_parameter_quantity) %} <!--custom parameter inputs-->
   <label>Add your own parameter:</label>
-  <input type="text" class="parameter-name" name="parameter{{i}}" placeholder="2-15 characters" size="12"> 
-  <label class="notification-text">{{notification_text["cptoadd"]}}</label>
+  <input type="text" class="parameter" name="customparameter{{i}}" placeholder="2-15 characters" size="12">
 
-  <label>, Custom data type:</label>
+  <label>, Parameter's data type:</label>
+  <select name="parameterdt{{i}}" class="parameter-datatype">
+    <option value=""></option>
+    {% for i in data_types %}
+        <option value="{{i}}">{{i}}</option>
+    {%endfor%}
+  </select>
+
+  <label>, Custom data type (optional):</label>
   <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12"> 
   {% if notification_text["cptoadd"] %}<label class="notification-text">{{notification_text["cptoadd"]}}</label>{% endif %}
   <br><br>
