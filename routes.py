@@ -5,6 +5,9 @@ import sqlite3
 app = Flask(__name__)
 
 scroll_bottom = False
+dev_functions = 20
+custom_parameter_quantity = 0
+parameter_quantity = 0
 
 
 def sql_statement(sql):
@@ -12,6 +15,7 @@ def sql_statement(sql):
 	conn = sqlite3.connect('functions.db')
 	cur = conn.cursor()
 	cur.execute(sql)  #selects all the items from the chosen table
+	conn.commit()
 	return clean_up_data(cur.fetchall())  #returns the results
 
 
@@ -61,7 +65,8 @@ def home():
 		neat_parameter_list[i] += ")"
 
 	#passes in all the data
-	return render_template("home.html", title="Home", scroll_bottom=scroll_bottom, function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
+	global scroll_bottom
+	return render_template("home.html", title="Home", dev_functions=dev_functions, scroll_bottom=scroll_bottom, function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
 
 
 @app.route('/add-your-own')
@@ -78,17 +83,26 @@ def add_your_own():
 @app.route('/add-your-own', methods=['POST'])
 def form():
 	response = request.form
+	max_parameters = 5
+	notification_text = {}
+	global custom_parameter_quantity
+	global parameter_quantity
+	global scroll_bottom
+
+	if not int(response["cptoadd"]) == custom_parameter_quantity or not int(response["ptoadd"]) == parameter_quantity: #user just wants to add parameters
+		custom_parameter_quantity = int(response["cptoadd"])
+		parameter_quantity = int(response["ptoadd"])
+		return render_template("add_your_own.html", notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
+	
 	custom_parameter_quantity = int(response["cptoadd"])
 	parameter_quantity = int(response["ptoadd"])
 
-	if response["cptoadd"] or response["ptoadd"]: #user just wants to add parameters
-		max_parameters = 5
-		notification_text = {"cptoadd" : "NOTIFICATION"}
-		return render_template("add_your_own.html", notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own", fname=fname)
-	
 	#user wants to submit
 
-	#bullet proofing
+	#bullet proofing:
+
+	if notification_text: #user did something wrong
+		return
 
 	#bullet proofing finished
 	fname = response['fname']
@@ -97,23 +111,23 @@ def form():
 
 	return_type_response = response["return type"]
 	if return_type_response: #get id of the return type
-		return_type = sql_statement(f"SELECT id FROM DataType WHERE name = {return_type_response}")
+		return_type = sql_statement(f"SELECT id FROM DataType WHERE name = '{return_type_response}'")
 	
 	custom_return_type_response = response["custom return type"]
 	if custom_return_type_response: #if return type already in database then get id, else add to database first
 		if not custom_return_type_response in sql_statement("SELECT name FROM DataType"):
-			sql_statement(f"INSERT INTO DataType (name) VALUES ({custom_return_type_response})")
-		return_type = sql_statement(f"SELECT id FROM DataType WHERE name = {custom_return_type_response}")
+			sql_statement(f"INSERT INTO DataType (name) VALUES ('{custom_return_type_response}')")
+		return_type = sql_statement(f"SELECT id FROM DataType WHERE name = '{custom_return_type_response}'")
 	
 	#inserts new entry
-	sql_statement(f"INSERT INTO Functions (function, description, return_type, doc_link) VALUES ({fname}, {description}, {return_type}, {doclink})")
-	new_fid = sql_statement(f"SELECT id FROM Functions WHERE name = {fname}")
+	sql_statement(f"INSERT INTO Functions (function, description, return_type, doc_link) VALUES ('{fname}', '{description}', '{return_type[0]}', '{doclink}')")
+	new_fid = sql_statement(f"SELECT id FROM Functions WHERE function = '{fname}'")[0]
 
 	for i in range(parameter_quantity): 
 		#loops through parameters, it gets the id of parameter and assigns it to new function addition
 		parameter = response[f"parameter{i}"]
-		parameter_id = sql_statement(f"SELECT id FROM Parameters WHERE name = {parameter}")
-		sql_statement(f"INSERT INTO FunctionParameters (fid, pid) VALUES ({new_fid}, {parameter_id})")
+		parameter_id = sql_statement(f"SELECT id FROM Parameters WHERE name = '{parameter}'")[0]
+		sql_statement(f"INSERT INTO FunctionParameters (fid, pid) VALUES ('{new_fid}', '{parameter_id}')")
 
 	for i in range(custom_parameter_quantity): 
 		#if existing datatype is used then gets the id of data type and uses it to add new parameter
@@ -122,8 +136,15 @@ def form():
 		parameterdt = response[f"parameterdt{i}"] #dt = data type
 		custom_parameterdt = response[f"customparameterdt{i}"]
 		
-		if parameterdt:
-			parameterdt_data_type = sql_statement(f"SELECT id FROM DataType WHERE name = {parameterdt}")
+		if custom_parameterdt:
+			if not custom_parameterdt in sql_statement("SELECT name FROM DataType"):
+				sql_statement(f"INSERT INTO DataType (name) VALUES ('{custom_parameterdt}')")
+			parameterdt = custom_parameterdt
+		
+		parameterdt_data_type = sql_statement(f"SELECT id FROM DataType WHERE name = '{parameterdt}'")[0]
+		sql_statement(f"INSERT INTO Parameters (name, data_type) VALUES ('{custom_parameter}', '{parameterdt_data_type}')")
+		custom_parameter_id = sql_statement(f"SELECT id FROM Parameters WHERE name = '{custom_parameter}'")[0]
+		sql_statement(f"INSERT INTO FunctionParameters (fid, pid) VALUES ('{new_fid}', '{custom_parameter_id}')")
 
 	scroll_bottom = True #only method i could think of for teleporting user to their function
 	return redirect("/") #redirects user to homepage to see their function

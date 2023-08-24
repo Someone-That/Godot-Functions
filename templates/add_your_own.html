@@ -87,7 +87,7 @@
 
   <label>, Custom data type (optional):</label>
   <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12"> 
-  {% if notification_text["cptoadd"] %}<label class="notification-text">{{notification_text["cptoadd"]}}</label>{% endif %}
+  {% if notification_text["customparameterdt{}".format(i)] %}<label class="notification-text">{{notification_text["customparameterdt{}".format(i)]}}</label>{% endif %}
   <br><br>
   {%endfor%}
 
