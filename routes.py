@@ -4,7 +4,6 @@ import sqlite3
 
 app = Flask(__name__)
 
-scroll_bottom = False
 dev_functions = 20
 custom_parameter_quantity = 0
 parameter_quantity = 0
@@ -65,8 +64,7 @@ def home():
 		neat_parameter_list[i] += ")"
 
 	#passes in all the data
-	global scroll_bottom
-	return render_template("home.html", title="Home", dev_functions=dev_functions, scroll_bottom=scroll_bottom, function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
+	return render_template("home.html", title="Home", dev_functions=dev_functions, function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
 
 
 @app.route('/add-your-own')
@@ -77,7 +75,7 @@ def add_your_own():
 	parameter_quantity = 0
 	max_parameters = 5
 	notification_text = {}
-	return render_template("add_your_own.html", notification_text=notification_text, title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, max_parameters=max_parameters)
+	return render_template("add_your_own.html", save_data={}, notification_text=notification_text, title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, max_parameters=max_parameters)
 
 
 @app.route('/add-your-own', methods=['POST'])
@@ -85,14 +83,15 @@ def form():
 	response = request.form
 	max_parameters = 5
 	notification_text = {}
+	data_types = sql_statement("SELECT name from DataType")
+	parameters = sql_statement("SELECT name from Parameters")
 	global custom_parameter_quantity
 	global parameter_quantity
-	global scroll_bottom
 
 	if not int(response["cptoadd"]) == custom_parameter_quantity or not int(response["ptoadd"]) == parameter_quantity: #user just wants to add parameters
 		custom_parameter_quantity = int(response["cptoadd"])
 		parameter_quantity = int(response["ptoadd"])
-		return render_template("add_your_own.html", notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
+		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
 	
 	custom_parameter_quantity = int(response["cptoadd"])
 	parameter_quantity = int(response["ptoadd"])
@@ -146,9 +145,15 @@ def form():
 		custom_parameter_id = sql_statement(f"SELECT id FROM Parameters WHERE name = '{custom_parameter}'")[0]
 		sql_statement(f"INSERT INTO FunctionParameters (fid, pid) VALUES ('{new_fid}', '{custom_parameter_id}')")
 
-	scroll_bottom = True #only method i could think of for teleporting user to their function
 	return redirect("/") #redirects user to homepage to see their function
+
+
+@app.errorhandler(404) #404 page
+def page_not_found(error):
+	return render_template("404.html", title="cease this")
 
 
 if __name__ == "__main__":
 	app.run(debug=True)
+
+

@@ -2,7 +2,7 @@
 {% block content %}
 
 <h2 id="title">My top {{function_quantity}} favourite functions</h2>
-{% if scroll_bottom %}<h2><a href="#bottom">See your function</a></h2>{% endif %}
+{% if function_quantity > dev_functions %}<h2><a href="#bottom">See your function</a></h2>{% endif %}
 
 {% for i in range(function_quantity) %} <!--loops through all the data neatly-->
     <h2 class="function-name">{{i+1}}. {{function_names[i]}}{{neat_parameter_list[i] | safe}}, {{return_types[i]}}</h2> <!--displays ranking, name, parameters, and return type-->

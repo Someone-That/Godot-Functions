@@ -5,17 +5,20 @@
 
 <form action="add-your-own", method="post">
   <label for="fname">Function name:</label>
-  <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12"> 
+  <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12" value="{{save_data['fname']}}"> 
   {% if notification_text["name"] %}<label class="notification-text">{{notification_text["name"]}}</label>{% endif %}
   <br><br>
 
   <label for="description">Description:</label> 
   {% if notification_text["description"] %}<label class="notification-text">{{notification_text["description"]}}</label>{% endif %}
   <br>
-  <textarea id="description" name="description" rows="4" cols="50" placeholder="2-200 characters"></textarea><br><br>
+  <textarea id="description" name="description" rows="4" cols="50" placeholder="2-200 characters">{{save_data['description']}}</textarea><br><br>
 
   <label for="return-type">Return type:</label>
   <select name="return type" id="return-type">
+    {% if save_data['return type'] %}
+    <option value="{{save_data['return type']}}">{{save_data['return type']}}</option>
+    {% endif %}
     <option value=""></option>
     {% for i in data_types %}
         <option value="{{i}}">{{i}}</option>
