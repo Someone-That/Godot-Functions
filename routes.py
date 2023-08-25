@@ -69,6 +69,8 @@ def home():
 
 @app.route('/add-your-own')
 def add_your_own():
+	global custom_parameter_quantity
+	global parameter_quantity
 	data_types = sql_statement("SELECT name from DataType")
 	parameters = sql_statement("SELECT name from Parameters")
 	custom_parameter_quantity = 0
@@ -87,7 +89,7 @@ def form():
 	parameters = sql_statement("SELECT name from Parameters")
 	global custom_parameter_quantity
 	global parameter_quantity
-
+	
 	if not int(response["cptoadd"]) == custom_parameter_quantity or not int(response["ptoadd"]) == parameter_quantity: #user just wants to add parameters
 		custom_parameter_quantity = int(response["cptoadd"])
 		parameter_quantity = int(response["ptoadd"])
@@ -99,9 +101,26 @@ def form():
 	#user wants to submit
 
 	#bullet proofing:
+	for key in response: #initializes dictionary
+		notification_text[key] = ""
+	
+	fname_length = len(response["fname"])
+	if fname_length < 2 or fname_length > 15:
+		notification_text["fname"] += "Fix length. "
+	
+	desc_length = len(response["description"])
+	if desc_length < 2 or desc_length > 200:
+		notification_text["description"] += "Fix length. "
+	
+	if response["return type"] and response["custom return type"]:
+		notification_text["return type"] += "Pick ONE. "
+	
+	doclink_length = len(response["doclink"])
+	if doclink_length < 2 or doclink_length > 100:
+		notification_text["doclink"] += "Fix length. "
 
 	if notification_text: #user did something wrong
-		return
+		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
 
 	#bullet proofing finished
 	fname = response['fname']
