@@ -6,7 +6,7 @@
 <form action="add-your-own", method="post">
   <label for="fname">Function name:</label>
   <input type="text" id="fname" name="fname" placeholder="2-15 characters" size="12" value="{{save_data['fname']}}"> 
-  {% if notification_text["name"] %}<label class="notification-text">{{notification_text["name"]}}</label>{% endif %}
+  {% if notification_text["fname"] %}<label class="notification-text">{{notification_text["fname"]}}</label>{% endif %}
   <br><br>
 
   <label for="description">Description:</label> 
@@ -75,7 +75,7 @@
         <option value="{{i}}">{{i}}</option>
     {%endfor%}
   </select>
-  {% if notification_text["ptoadd"] %}<label class="notification-text">{{notification_text["ptoadd"]}}</label>{% endif %}
+  {% if notification_text['parameter{}'.format(i)] %}<label class="notification-text">{{notification_text['parameter{}'.format(i)]}}</label>{% endif %}
   <br><br>
   {%endfor%}
 
@@ -102,7 +102,7 @@
 
   <label for="doclink">Documentation Link:</label>
   <input type="text" id="doclink" name="doclink" size="100" placeholder="2-100 characters" value="{{save_data['doclink']}}"> 
-  {% if notification_text["documentation link"] %}<label class="notification-text">{{notification_text["documentation link"]}}</label>{% endif %}
+  {% if notification_text["doclink"] %}<label class="notification-text">{{notification_text["doclink"]}}</label>{% endif %}
   <br><br>
 
   <input type="submit" value="Submit">

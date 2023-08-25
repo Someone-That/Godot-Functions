@@ -26,6 +26,13 @@ def clean_up_data(data):
 	return clean_data
 
 
+def is_dict_empty(dictionary):
+	for key in dictionary:
+		if dictionary[key]:
+			return False
+	return True
+
+
 @app.route('/')
 def home():
 	#extract data from database in neat form
@@ -94,32 +101,58 @@ def form():
 		custom_parameter_quantity = int(response["cptoadd"])
 		parameter_quantity = int(response["ptoadd"])
 		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
+	#user wants to submit
 	
 	custom_parameter_quantity = int(response["cptoadd"])
 	parameter_quantity = int(response["ptoadd"])
 
-	#user wants to submit
-
 	#bullet proofing:
-	for key in response: #initializes dictionary
-		notification_text[key] = ""
-	
 	fname_length = len(response["fname"])
 	if fname_length < 2 or fname_length > 15:
-		notification_text["fname"] += "Fix length. "
+		notification_text["fname"] = "Fix length. "
+	elif response["fname"] in sql_statement("SELECT function FROM Functions"): #checks if function exists
+		notification_text["fname"] = "Function already exists. "
 	
 	desc_length = len(response["description"])
 	if desc_length < 2 or desc_length > 200:
-		notification_text["description"] += "Fix length. "
+		notification_text["description"] = "Fix length. "
 	
-	if response["return type"] and response["custom return type"]:
-		notification_text["return type"] += "Pick ONE. "
+	#the if statement below checks if both data type fields are used or if both are empty
+	if (response["return type"] and response["custom return type"]) or (not response["return type"] and not response["custom return type"]):
+		notification_text["return type"] = "Pick ONE. "
+	
+	for i in range(parameter_quantity):
+		if not response[f"parameter{i}"]: #user hasn't selected anything for parameter
+			notification_text[f"parameter{i}"] = "Select a parameter."
+	
+	for i in range(custom_parameter_quantity): #loops through custom parameters
+		noti = f"customparameterdt{i}"
+		notification_text[noti] = ""
+		
+		#check name length
+		parameter_length = len(response[f"customparameter{i}"])
+		if parameter_length < 2 or parameter_length > 15:
+			notification_text[noti] += "Fix name length. "
+
+		#check for improper simultaneous usage
+		#the if statement below checks if both data type fields are used or if both are empty
+		if (response[f"customparameterdt{i}"] and response[f"parameterdt{i}"]) or (not response[f"customparameterdt{i}"] and not response[f"parameterdt{i}"]):
+			notification_text[noti] += "Pick ONE between custom/non-custom data type. "
+		
+		#check custom data type length
+		customdt_length = len(response[f"customparameterdt{i}"])
+		if customdt_length < 2 or customdt_length > 15:
+			notification_text[noti] += "Fix custom data type length. "
+		
+		#check if parameter already exists, if so, override all other error text
+		if response[f"customparameter{i}"] in sql_statement("SELECT name FROM Parameters"): #checks if parameter exists
+			notification_text[noti] = "Parameter already exists. "
 	
 	doclink_length = len(response["doclink"])
 	if doclink_length < 2 or doclink_length > 100:
-		notification_text["doclink"] += "Fix length. "
+		notification_text["doclink"] = "Fix length. "
 
-	if notification_text: #user did something wrong
+	if not is_dict_empty(notification_text): #user did something wrong
 		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
 
 	#bullet proofing finished
@@ -164,7 +197,7 @@ def form():
 		custom_parameter_id = sql_statement(f"SELECT id FROM Parameters WHERE name = '{custom_parameter}'")[0]
 		sql_statement(f"INSERT INTO FunctionParameters (fid, pid) VALUES ('{new_fid}', '{custom_parameter_id}')")
 
-	return redirect("/") #redirects user to homepage to see their function
+	return redirect("/#bottom") #redirects user to homepage to see their function
 
 
 @app.errorhandler(404) #404 page
