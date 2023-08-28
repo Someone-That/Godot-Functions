@@ -8,7 +8,8 @@ body
 
 h1  
 {
-    padding:50px;
+    padding:20px;
+    margin-bottom: 500px;
     text-align: start;
     width: 94%;
     background-color: yellow;
@@ -43,4 +44,9 @@ h2
 {
     margin-left: 10px;
     color: red;
+}
+
+img
+{
+    width: 120px;
 }

@@ -50,7 +50,8 @@ def home():
 	functions_that_have_parameters = sql_statement("SELECT function FROM FunctionParameters r INNER JOIN Functions c ON r.fid = c.id")
 	function_parameters = sql_statement("SELECT name FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id")
 	#the statement below gets the data type ids of the FunctionParameters and then gets the name of the data type using the ids
-	parameter_data_types = sql_statement(f"SELECT name FROM (SELECT data_type FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id) r INNER JOIN DataType c ON r.data_type = c.id")
+	space_saver = f"SELECT name FROM (SELECT data_type FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id) r INNER JOIN DataType c ON r.data_type = c.id"
+	parameter_data_types = sql_statement(space_saver)
 
 	neat_parameter_list = []
 	for i in range(function_quantity):
@@ -71,7 +72,9 @@ def home():
 		neat_parameter_list[i] += ")"
 
 	#passes in all the data
-	return render_template("home.html", title="Home", dev_functions=dev_functions, function_names=function_names, descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, neat_parameter_list=neat_parameter_list)
+	return render_template("home.html", title="Home", dev_functions=dev_functions, function_names=function_names, 
+		descriptions=descriptions, return_types=return_types, doc_links=doc_links, function_quantity=function_quantity, 
+		neat_parameter_list=neat_parameter_list)
 
 
 @app.route('/add-your-own')
@@ -84,7 +87,9 @@ def add_your_own():
 	parameter_quantity = 0
 	max_parameters = 5
 	notification_text = {}
-	return render_template("add_your_own.html", save_data={}, notification_text=notification_text, title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, max_parameters=max_parameters)
+	return render_template("add_your_own.html", save_data={}, notification_text=notification_text, 
+		title="Add your own", data_types=data_types, parameters=parameters, custom_parameter_quantity=custom_parameter_quantity, 
+		parameter_quantity=parameter_quantity, max_parameters=max_parameters)
 
 
 @app.route('/add-your-own', methods=['POST'])
@@ -100,7 +105,9 @@ def form():
 	if not int(response["cptoadd"]) == custom_parameter_quantity or not int(response["ptoadd"]) == parameter_quantity: #user just wants to add parameters
 		custom_parameter_quantity = int(response["cptoadd"])
 		parameter_quantity = int(response["ptoadd"])
-		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
+		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, 
+			notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, 
+			parameter_quantity=parameter_quantity, title="Add your own")
 	#user wants to submit
 	
 	custom_parameter_quantity = int(response["cptoadd"])
@@ -153,7 +160,9 @@ def form():
 		notification_text["doclink"] = "Fix length. "
 
 	if not is_dict_empty(notification_text): #user did something wrong
-		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, parameter_quantity=parameter_quantity, title="Add your own")
+		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, 
+			notification_text=notification_text, max_parameters=max_parameters, custom_parameter_quantity=custom_parameter_quantity, 
+			parameter_quantity=parameter_quantity, title="Add your own")
 
 	#bullet proofing finished
 	fname = response['fname']
