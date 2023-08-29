@@ -34,8 +34,7 @@ def is_dict_empty(dictionary):
 
 
 @app.route('/')
-def home():
-	#extract data from database in neat form
+def home(): #extract data from database in neat form
 	function_names = sql_statement("SELECT function FROM Functions")
 	descriptions = sql_statement("SELECT description FROM Functions")
 	return_types = sql_statement("SELECT name FROM Functions r INNER JOIN DataType c ON r.return_type = c.id")
@@ -46,7 +45,7 @@ def home():
 
 	#gets parameter data by extracting functions that have parameters, parameters of those functions, data type of those parameters and then
 	#generates a neat list for easy implementation into html by simply appending it onto the list of functions
-	#note: the sql statements below were created using the stackoverflow statement above
+	#note: the sql statements below were created by manipulating the stackoverflow statement above
 	functions_that_have_parameters = sql_statement("SELECT function FROM FunctionParameters r INNER JOIN Functions c ON r.fid = c.id")
 	function_parameters = sql_statement("SELECT name FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id")
 	#the statement below gets the data type ids of the FunctionParameters and then gets the name of the data type using the ids
@@ -102,7 +101,8 @@ def form():
 	global custom_parameter_quantity
 	global parameter_quantity
 	
-	if not int(response["cptoadd"]) == custom_parameter_quantity or not int(response["ptoadd"]) == parameter_quantity: #user just wants to add parameters
+	if not int(response["cptoadd"]) == custom_parameter_quantity or not int(response["ptoadd"]) == parameter_quantity: 
+		#the if statement above checks if the user just wants to add parameters
 		custom_parameter_quantity = int(response["cptoadd"])
 		parameter_quantity = int(response["ptoadd"])
 		return render_template("add_your_own.html", save_data=response, data_types=data_types, parameters=parameters, 
@@ -120,14 +120,19 @@ def form():
 	elif response["fname"] in sql_statement("SELECT function FROM Functions"): #checks if function exists
 		notification_text["fname"] = "Function already exists. "
 	
+	#desc length check
 	desc_length = len(response["description"])
 	if desc_length < 2 or desc_length > 200:
 		notification_text["description"] = "Fix length. "
 	
+	#return type check
 	#the if statement below checks if both data type fields are used or if both are empty
-	if (response["return type"] and response["custom return type"]) or (not response["return type"] and not response["custom return type"]):
+	both_full = (response["return type"] and response["custom return type"])
+	both_empty = (not response["return type"] and not response["custom return type"])
+	if both_full or both_empty:
 		notification_text["return type"] = "Pick ONE. "
 	
+	#loops through non custom parmeters and tells the user off if any are empty
 	for i in range(parameter_quantity):
 		if not response[f"parameter{i}"]: #user hasn't selected anything for parameter
 			notification_text[f"parameter{i}"] = "Select a parameter."
@@ -143,16 +148,19 @@ def form():
 
 		#check for improper simultaneous usage
 		#the if statement below checks if both data type fields are used or if both are empty
-		if (response[f"customparameterdt{i}"] and response[f"parameterdt{i}"]) or (not response[f"customparameterdt{i}"] and not response[f"parameterdt{i}"]):
+		both_full = (response[f"customparameterdt{i}"] and response[f"parameterdt{i}"])
+		both_empty = (not response[f"customparameterdt{i}"] and not response[f"parameterdt{i}"])
+		if both_full or both_empty:
 			notification_text[noti] += "Pick ONE between custom/non-custom data type. "
 		
 		#check custom data type length
 		customdt_length = len(response[f"customparameterdt{i}"])
-		if customdt_length < 2 or customdt_length > 15:
+		#the if statement below checks length AND if the user intends to use this field
+		if (customdt_length < 2 or customdt_length > 15) and not response[f"parameterdt{i}"]:
 			notification_text[noti] += "Fix custom data type length. "
 		
 		#check if parameter already exists, if so, override all other error text
-		if response[f"customparameter{i}"] in sql_statement("SELECT name FROM Parameters"): #checks if parameter exists
+		if response[f"customparameter{i}"] in sql_statement("SELECT name FROM Parameters"):
 			notification_text[noti] = "Parameter already exists. "
 	
 	doclink_length = len(response["doclink"])
@@ -180,7 +188,8 @@ def form():
 		return_type = sql_statement(f"SELECT id FROM DataType WHERE name = '{custom_return_type_response}'")
 	
 	#inserts new entry
-	sql_statement(f"INSERT INTO Functions (function, description, return_type, doc_link) VALUES ('{fname}', '{description}', '{return_type[0]}', '{doclink}')")
+	values_to_insert = f"'{fname}', '{description}', '{return_type[0]}', '{doclink}'"
+	sql_statement(f"INSERT INTO Functions (function, description, return_type, doc_link) VALUES ({values_to_insert})")
 	new_fid = sql_statement(f"SELECT id FROM Functions WHERE function = '{fname}'")[0]
 
 	for i in range(parameter_quantity): 
@@ -216,5 +225,3 @@ def page_not_found(error):
 
 if __name__ == "__main__":
 	app.run(debug=True)
-
-
