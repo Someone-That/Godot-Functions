@@ -52,3 +52,11 @@ img
     margin-left: 10px;
     width: 120px;
 }
+
+.grid-container {
+    display: grid;
+    border-color: white;
+    border: 10px;
+    overflow-x: hidden;
+    grid-template-columns: 33.3333% 33.3333% 33.3333%;
+  }
