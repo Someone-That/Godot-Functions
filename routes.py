@@ -40,7 +40,14 @@ def home(): #extract data from database in neat form
 	return_types = sql_statement("SELECT name FROM Functions r INNER JOIN DataType c ON r.return_type = c.id")
 	#this statement above was found from playing around with this answer on stackoverflow
 	#https://stackoverflow.com/questions/68387600/sql-convert-foreign-key-table-into-a-specific-value-from-other-table
+	
+	#generate doclinks list
 	doc_links = sql_statement("SELECT doc_link FROM Functions")
+	for i in range(len(doc_links)):
+		if i < dev_functions:
+			doc_links[i] = f"https://docs.godotengine.org/en/stable/classes/class_{doc_links[i]}"
+			#this system takes advantage of the repeated link path of the godot docs but only for dev functions
+	
 	function_quantity = sql_statement("SELECT COUNT(id) FROM Functions")[0]
 
 	#gets parameter data by extracting functions that have parameters, parameters of those functions, data type of those parameters and then

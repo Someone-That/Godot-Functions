@@ -1,6 +1,6 @@
 body
 {
-    font-family: "Comic Sans MS";
+    font-family: "Segoe UI", "Arial";
     background-color: black;
     color: white;
     text-align: center;
@@ -9,7 +9,8 @@ body
 h1  
 {
     padding-top: 20px;
-    text-align: start;
+    text-align: center;
+    vertical-align: middle;
     font-size: 60px;
     width: 100%;
     background-color: rgb(75, 102, 170);
@@ -20,6 +21,12 @@ h2
 {
     text-align: center;
 }
+
+a:visited { color: rgb(0, 110, 255); }
+a:hover { color: lightgreen; }
+a:active { color: red; }
+a:link { color: rgb(0, 110, 255); }
+a {text-decoration: none;}
 
 .function-name
 {
@@ -53,10 +60,30 @@ img
     width: 120px;
 }
 
-.grid-container {
+.grid-container 
+{
+    border-radius: 20px;
+    border: 1px solid #fdfdfd;
+    border-width: 10px;
+    margin-left: 200px;
+    margin-right: 200px;
     display: grid;
-    border-color: white;
-    border: 10px;
     overflow-x: hidden;
-    grid-template-columns: 33.3333% 33.3333% 33.3333%;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-item
+  {
+    margin: 10px;
+    border: 1px solid rgb(255, 255, 255);
+  }
+
+  .description
+  {
+    margin: 10px
+  }
+
+  .function-name
+  {
+    margin: 10px;
   }
