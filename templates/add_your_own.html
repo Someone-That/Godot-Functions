@@ -25,7 +25,7 @@
     {%endfor%}
   </select>
   
-  <label for="custom-return-type">, Custom return type:</label>
+  <label for="custom-return-type">&nbsp;Custom return type:</label>
   <input type="text" id="custom-return-type" name="custom return type" placeholder="2-15 characters" size="12" value="{{save_data['custom return type']}}"> 
   {% if notification_text["return type"] %}<label class="notification-text">{{notification_text["return type"]}}</label>{% endif %}
   <br><br>
@@ -45,7 +45,7 @@
   {% endif %}
 
   {% if custom_parameter_quantity < max_parameters %}
-  <label for="custom-parameter-quantity">Custom parameters to add:</label>
+  <label for="custom-parameter-quantity">&nbsp;Custom parameters to add:</label>
   <select name="cptoadd" id="custom-parameter-quantity">
     <option value="{{custom_parameter_quantity}}"></option>
     {% for i in range(max_parameters-custom_parameter_quantity) %}
@@ -83,7 +83,7 @@
   <label>Add your own parameter:</label>
   <input type="text" class="parameter" name="customparameter{{i}}" placeholder="2-15 characters" size="12" value="{{save_data['customparameter{}'.format(i)]}}">
 
-  <label>, Parameter's data type:</label>
+  <label>&nbsp;Parameter's data type:</label>
   <select name="parameterdt{{i}}" class="parameter-datatype">
     {% if save_data['parameterdt{}'.format(i)] %}
     <option value="{{save_data['parameterdt{}'.format(i)]}}">{{save_data['parameterdt{}'.format(i)]}}</option>
@@ -94,7 +94,7 @@
     {%endfor%}
   </select>
 
-  <label>, Custom data type (optional):</label>
+  <label>&nbsp;Custom data type (optional):</label>
   <input type="text" class="custom-parameter-datatype" name="customparameterdt{{i}}" placeholder="2-15 characters" size="12" value="{{save_data['customparameterdt{}'.format(i)]}}"> 
   {% if notification_text["customparameterdt{}".format(i)] %}<label class="notification-text">{{notification_text["customparameterdt{}".format(i)]}}</label>{% endif %}
   <br><br>

@@ -7,7 +7,7 @@
 <div class="grid-container">
 {% for i in range(function_quantity) %} <!--loops through all the data neatly-->
     <div class="grid-item">
-    <h2 class="function-name"><a href="{{doc_links}}"></a>{{i+1}}. {{function_names[i]}}{{neat_parameter_list[i] | safe}}, {{return_types[i]}}</h2> <!--displays ranking, name, parameters, and return type-->
+    <h2 class="function-name"><a href="{{doc_links[i]}}" target="_blank">{{i+1}}. {{function_names[i]}}{{neat_parameter_list[i] | safe}}, {{return_types[i]}}</a></h2> <!--displays ranking, name, parameters, and return type-->
     <div class = "description">
     <h2>{{descriptions[i]}}</h2>
     </div>

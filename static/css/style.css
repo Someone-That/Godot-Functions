@@ -8,9 +8,11 @@ body
 
 h1  
 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-top: 20px;
-    text-align: center;
-    vertical-align: middle;
+    padding-bottom: 20px;
     font-size: 60px;
     width: 100%;
     background-color: rgb(75, 102, 170);
@@ -63,19 +65,20 @@ img
 .grid-container 
 {
     border-radius: 20px;
-    border: 1px solid #fdfdfd;
-    border-width: 10px;
-    margin-left: 200px;
-    margin-right: 200px;
+    border: 1px solid #ffffff;
+    border-width: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
     display: grid;
-    overflow-x: hidden;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50% 50%;
   }
 
   .grid-item
   {
     margin: 10px;
-    border: 1px solid rgb(255, 255, 255);
+    overflow-wrap: break-word;
+    border-radius: 5px;
+    border: 1px dotted rgb(255, 255, 255);
   }
 
   .description
