@@ -25,9 +25,9 @@ h2
 }
 
 a:visited { color: rgb(0, 110, 255); }
+a:link { color: rgb(0, 110, 255); }
 a:hover { color: lightgreen; }
 a:active { color: red; }
-a:link { color: rgb(0, 110, 255); }
 a {text-decoration: none;}
 
 .function-name

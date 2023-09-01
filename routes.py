@@ -139,6 +139,11 @@ def form():
 	if both_full or both_empty:
 		notification_text["return type"] = "Pick ONE. "
 	
+	custom_return_length = len(response["custom return type"])
+	#the if statement below checks length AND if the user intends to use this field
+	if (custom_return_length < 2 or custom_return_length > 15) and not response["return type"] and response["custom return type"]:
+		notification_text["return type"] = "Fix custom return type length. "
+	
 	#loops through non custom parmeters and tells the user off if any are empty
 	for i in range(parameter_quantity):
 		if not response[f"parameter{i}"]: #user hasn't selected anything for parameter
@@ -163,7 +168,7 @@ def form():
 		#check custom data type length
 		customdt_length = len(response[f"customparameterdt{i}"])
 		#the if statement below checks length AND if the user intends to use this field
-		if (customdt_length < 2 or customdt_length > 15) and not response[f"parameterdt{i}"]:
+		if (customdt_length < 2 or customdt_length > 15) and not response[f"parameterdt{i}"] and response[f"customparameterdt{i}"]:
 			notification_text[noti] += "Fix custom data type length. "
 		
 		#check if parameter already exists, if so, override all other error text
