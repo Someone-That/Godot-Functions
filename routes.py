@@ -56,7 +56,9 @@ def home(): #extract data from database in neat form
 	functions_that_have_parameters = sql_statement("SELECT function FROM FunctionParameters r INNER JOIN Functions c ON r.fid = c.id")
 	function_parameters = sql_statement("SELECT name FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id")
 	#the statement below gets the data type ids of the FunctionParameters and then gets the name of the data type using the ids
-	space_saver = f"SELECT name FROM (SELECT data_type FROM FunctionParameters r INNER JOIN Parameters c ON r.pid = c.id) r INNER JOIN DataType c ON r.data_type = c.id"
+	space_saver = """SELECT name FROM (SELECT data_type FROM FunctionParameters 
+	              r INNER JOIN Parameters c ON r.pid = c.id) 
+				  r INNER JOIN DataType c ON r.data_type = c.id"""
 	parameter_data_types = sql_statement(space_saver)
 
 	neat_parameter_list = []
